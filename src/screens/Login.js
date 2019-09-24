@@ -1,7 +1,9 @@
-import React, { Component } from 'react'
-import { Text, View, Image, ImageBackground, StyleSheet, Dimensions, TouchableOpacity } from 'react-native'
-import { TextField } from 'react-native-material-textfield'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import React, { Component } from 'react';
+import { Text, View, Image, ImageBackground, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
+import { TextField } from 'react-native-material-textfield';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Storage from '../utils/Storage';
+import { STORAGE_CONST } from '../utils/Constants';
 
 const { width, height } = Dimensions.get("window")
 
@@ -11,8 +13,8 @@ export default class Login extends Component {
   
     this.state = {
        isPasswordVisible: false,
-       username: "",
-       password: ""
+       username: "admin@gmail.com",
+       password: "Simform.123"
     }
   }
 
@@ -23,7 +25,14 @@ export default class Login extends Component {
   }
 
   submitForm = () => {
-    this.props.navigation.navigate("Home")
+    if(this.state.username != "admin@gmail.com") {
+      alert('Username is incorrect')
+    } else if(this.state.password != "Simform.123") {
+      alert('Password is incorrect')
+    } else {
+      Storage.setItem(STORAGE_CONST.USERNAME, this.state.username);
+      this.props.navigation.navigate("Home")
+    }
   }
 
   navigateToSignUp = () => this.props.navigation.navigate("Signup")

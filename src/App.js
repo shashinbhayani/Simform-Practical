@@ -1,15 +1,17 @@
-import React, { Component } from 'react'
-import { Text, View, SafeAreaView, KeyboardAvoidingView } from 'react-native'
+import React, { Component } from 'react';
+import { Provider } from 'react-redux'
+import { KeyboardAvoidingView } from 'react-native'
 import Routes from './Routes';
+import Store from './utils/Store';
 
 class App extends Component {
   render() {
     return (
-      // <SafeAreaView style={{flex: 1}}>
+      <Provider store={Store} >
         <KeyboardAvoidingView style={{flex: 1}}>
           <Routes />
         </KeyboardAvoidingView>
-      // </SafeAreaView>
+      </Provider>
     );
   }
 }

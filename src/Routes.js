@@ -5,6 +5,7 @@ import Signup from './screens/Signup';
 import Videos from './screens/Videos';
 import Strips from './screens/Strips';
 import Profile from './screens/Profile';
+import Splash from './screens/Splash';
 
 const HomeRoute = createBottomTabNavigator({
   Videos: Videos,
@@ -24,11 +25,12 @@ const AuthRoute = createStackNavigator({
 
 const Routes = createSwitchNavigator(
   {
+    Splash: Splash,
     Auth: AuthRoute,
     Home: HomeRoute
   },
   {
-    initialRouteName: 'Auth',
+    initialRouteName: 'Splash',
     headerMode: 'none',
     navigationOptions: {
       headerVisible: false,
