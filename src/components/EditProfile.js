@@ -1,17 +1,35 @@
 import React, { Component } from 'react'
 import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { TextField } from 'react-native-material-textfield';
+import { STORAGE_CONST } from '../utils/Constants';
+import Storage from '../utils/Storage';
 
 export default class EditProfile extends Component {
 
   constructor(props) {
     super(props)
-  
-    this.state = {
-       
-    }
+
+    const { username, mobile, mobileCode, email } = this.props.data
+    this.state = { username, mobile, mobileCode, email }
   }
-  
+
+  updateData = async () => {
+    const keyValues = [
+      [STORAGE_CONST.USERNAME, this.state.username.toString()],
+      [STORAGE_CONST.MOBILE_NO, this.state.mobile.toString()],
+      [STORAGE_CONST.MOBILE_CODE, this.state.mobileCode.toString()],
+      [STORAGE_CONST.EMAIL, this.state.email.toString()],
+    ]
+
+    try {
+      await Storage.multiSet(keyValues)
+      this.props.getUserData();
+      this.props.toggleModal()
+    } catch (error) {
+      alert("Error while updating Data")
+    }
+
+  }
   render() {
     return (
       <View style={styles.container}>
@@ -22,34 +40,34 @@ export default class EditProfile extends Component {
         <Image source={require("./../assets/img/group2217.png")} style={{alignSelf: "center"}} />
         <TextField 
           label='Username'
-          value={"John Doe"}
+          value={this.state.username}
           style={styles.input}
-          tintColor="rgb(255, 162, 92)"
-          onChangeText={text => this.setState({ text })}
+          tintColor={COLORS.PRIMARY_COLOR}
+          onChangeText={username => this.setState({ username })}
         />
         <View style={{flexDirection: "row"}}>
           <TextField 
             label='Code'
-            value={"+91"}
+            value={this.state.mobileCode}
             containerStyle={{width: 100}}
-            tintColor="rgb(255, 162, 92)"
-            onChangeText={text => this.setState({ text })}
+            tintColor={COLORS.PRIMARY_COLOR}
+            onChangeText={mobileCode => this.setState({ mobileCode })}
           />
           <TextField 
             label='Mobile Number'
-            value={"9537646564"}
+            value={this.state.mobile}
             containerStyle={{flex: 1, marginLeft: 20}}
-            tintColor="rgb(255, 162, 92)"
-            onChangeText={text => this.setState({ text })}
+            tintColor={COLORS.PRIMARY_COLOR}
+            onChangeText={mobile => this.setState({ mobile })}
           />
         </View>
         <TextField 
           label='Email'
-          value={"shashinbhayani@gmail.com"}
-          tintColor="rgb(255, 162, 92)"
-          onChangeText={text => this.setState({ text })}
+          value={this.state.email}
+          tintColor={COLORS.PRIMARY_COLOR}
+          onChangeText={email => this.setState({ email })}
         />
-        <TouchableOpacity style={styles.updateBtn} activeOpacity={1}>
+        <TouchableOpacity style={styles.updateBtn} activeOpacity={1} onPress={this.updateData}>
           <Text style={styles.updateBtnText}>Update</Text>
         </TouchableOpacity>
       </View>
@@ -73,7 +91,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 20,
     textAlign: "center",
-    color: "rgb(255, 162, 92)"
+    color: COLORS.PRIMARY_COLOR
   },
   closeBtn: {
     fontSize: 20
@@ -85,11 +103,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     position: "absolute",
     bottom: 10,
-    backgroundColor: "rgb(255, 162, 92)",
+    backgroundColor: COLORS.PRIMARY_COLOR,
     paddingVertical: 10
   },
   updateBtnText: {
     fontSize: 17,
-    color: "rgb(255, 255, 255)"
+    color: COLORS.SECONDARY_COLOR
   }
 })

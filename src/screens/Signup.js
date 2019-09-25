@@ -9,11 +9,18 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { TextField } from 'react-native-material-textfield';
+import { COLORS } from '../utils/Constants';
 
 export default class Signup extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      username: "John Doe",
+      mobileCode: "+00",
+      mobileNo: "9856237813",
+      email: "johndoe@gmail.com",
+      password: "Simform.123",
+      address: "2134, Kembery Driveschamburg, IL, 60173",
       isPasswordVisible: false,
     };
   }
@@ -31,6 +38,7 @@ export default class Signup extends Component {
       <Icon name={this.state.isPasswordVisible ? "eye-off-outline" : "eye-outline"} size={20} />
     </TouchableOpacity>
   )
+
   render() {
     return (
       <View>
@@ -43,48 +51,52 @@ export default class Signup extends Component {
           </View>
           <TextField
             label="Username"
+            value={this.state.username}
             placeholder="Enter your username"
-            tintColor="rgb(255, 162, 92)"
+            tintColor={COLORS.PRIMARY_COLOR}
             containerStyle={{marginVertical: 5}}
           />
           <View style={styles.mobileNoContainer}>
             <View style={{flex: 1}}>
               <TextField 
                 label="Code"
+                value={this.state.mobileCode}
                 placeholder="+91"
                 keyboardType="phone-pad"
-                tintColor="rgb(255, 162, 92)"
+                tintColor={COLORS.PRIMARY_COLOR}
               />
             </View>
             <View style={{flex: 4}}>
               <TextField
                 label="Mobile Number"
+                value={this.state.mobileNo}
                 placeholder="Enter mobile number"
                 keyboardType="numeric"
-                tintColor="rgb(255, 162, 92)"
+                tintColor={COLORS.PRIMARY_COLOR}
               />
             </View>
           </View>
           <TextField
             label="Email(optional)"
             placeholder="Enter your email"
+            value={this.state.email}
             containerStyle={{marginVertical: 5}}
-            tintColor="rgb(255, 162, 92)"
+            tintColor={COLORS.PRIMARY_COLOR}
           />
           <TextField
-            ref="password"
             label='Password'
             value={this.state.password}
             secureTextEntry={!this.state.isPasswordVisible}
-            tintColor="rgb(255, 162, 92)"
+            tintColor={COLORS.PRIMARY_COLOR}
             onChangeText={password => this.setState({ password })}
             renderAccessory={this._renderTogglePassword}
           />
           <TextField
             label="Address"
+            value={this.state.address}
             placeholder="Enter your address"
             containerStyle={{marginVertical: 5}}
-            tintColor="rgb(255, 162, 92)"
+            tintColor={COLORS.PRIMARY_COLOR}
           />
           <View
             style={styles.referalCodeContainer}>
@@ -141,7 +153,7 @@ const styles = StyleSheet.create({
   },
   signupBtn: {
     width: '30%',
-    backgroundColor: 'orange',
+    backgroundColor: COLORS.PRIMARY_COLOR,
     paddingLeft: 20,
     paddingRight: 10,
     height: 35,

@@ -50,14 +50,14 @@ export default connect(mapStateToProps, mapDispatchToProps)(Strips)
 const styles = StyleSheet.create({
   mainContainer: {
     width: "100%",
-    backgroundColor: "rgb(255, 255, 255)",
+    backgroundColor: COLORS.SECONDARY_COLOR,
     paddingHorizontal: 20,
     paddingVertical: 20
   },
   nextBtn: {
     alignSelf: "flex-end",
     backgroundColor: "rgb(162, 163, 164)",
-    color: "rgb(255, 255, 255)",
+    color: COLORS.SECONDARY_COLOR,
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 20

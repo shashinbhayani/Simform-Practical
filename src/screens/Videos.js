@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, FlatList, Image } from 'react-native'
+import { Text, View, FlatList, StyleSheet } from 'react-native'
 import { connect } from "react-redux";
 import { fetchVideos } from "./../actions/VideosAction"
 import Video from '../components/Video';
@@ -22,8 +22,8 @@ class Videos extends Component {
     const { videos } = this.props;
     
     return (
-      <View style={{ backgroundColor: "rgb(193,206,236)"}}>
-        <Text style={{lineHeight: 45, fontSize: 20, fontWeight: "bold", textAlign: "center" }}>Videos</Text>
+      <View style={styles.mainContainer}>
+        <Text style={styles.title}>Videos</Text>
         <FlatList
           style={{ marginHorizontal:10 }}
           data={videos}
@@ -40,12 +40,22 @@ class Videos extends Component {
 
 const mapStateToProps = ({VideosReducer}) => {
   const { videos } = VideosReducer;
-  return {
-    videos
-  }
+  return { videos }
 }
 
 const mapDispatchToProps = {
   fetchVideos
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Videos)
+
+const styles = StyleSheet.create({
+  mainContainer: { 
+    backgroundColor: "rgb(193,206,236)"
+  },
+  title: {
+    lineHeight: 45,
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center"
+  }
+})

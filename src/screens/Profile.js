@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Text, View, Image, StyleSheet, TouchableOpacity, Modal } from 'react-native'
 import EditProfile from '../components/EditProfile';
+import Storage from '../utils/Storage';
+import { STORAGE_CONST } from '../utils/Constants';
 
 export default class Profile extends Component {
 
@@ -8,7 +10,37 @@ export default class Profile extends Component {
     super(props)
 
     this.state = {
+      username: "",
+      mobile: "",
+      email: "",
       modalVisible: false
+    }
+  }
+
+  componentDidMount() {
+    this.getUserData()
+  }
+  
+  getUserData = async () => {
+    try {
+      const result = await Storage.multiGet([STORAGE_CONST.USERNAME, STORAGE_CONST.MOBILE_NO, STORAGE_CONST.MOBILE_CODE, STORAGE_CONST.EMAIL])
+
+      const data = result.reduce((data, item) => {
+        return {
+          ...data,
+          [item[0]]: item[1]
+        }
+      },{})
+      
+      this.setState({
+        username: data[STORAGE_CONST.USERNAME],
+        mobile: data[STORAGE_CONST.MOBILE_NO],
+        mobileCode: data[STORAGE_CONST.MOBILE_CODE],
+        email: data[STORAGE_CONST.EMAIL],
+      })
+    } catch (error) {
+      console.log(error)
+      alert("Error while fetching data")
     }
   }
 
@@ -19,6 +51,7 @@ export default class Profile extends Component {
   }
 
   doLogout = () => {
+    Storage.removeAll()
     this.props.navigation.navigate("Auth")
   }
 
@@ -29,7 +62,7 @@ export default class Profile extends Component {
           animationType="slide"
           transparent={false}
           visible={this.state.modalVisible}>
-          <EditProfile toggleModal={this.toggleModal} />
+          <EditProfile toggleModal={this.toggleModal} getUserData={this.getUserData} data={this.state} />
         </Modal>
         <View style={styles.header}>
           <Text style={styles.title}>Profile</Text>
@@ -43,15 +76,15 @@ export default class Profile extends Component {
             <Text style={styles.name}>John Doe</Text>
             <React.Fragment>
               <View style={styles.row}>
-                <Text style={styles.rowDetail}>John</Text>
+                <Text style={styles.rowDetail}>{this.state.username}</Text>
                 <Text style={styles.rowDetailTitle}>Username</Text>
               </View>
               <View style={styles.row}>
-                <Text style={styles.rowDetail}>9537646564</Text>
+                <Text style={styles.rowDetail}>{this.state.mobile}</Text>
                 <Text style={styles.rowDetailTitle}>Mobile Number</Text>
               </View>
               <View style={styles.row}>
-                <Text style={styles.rowDetail}>shashinbhayani@gmail.com</Text>
+                <Text style={styles.rowDetail}>{this.state.email}</Text>
                 <Text style={styles.rowDetailTitle}>Email(Optional)</Text>
               </View>
             </React.Fragment>
@@ -69,7 +102,7 @@ export default class Profile extends Component {
 const styles = StyleSheet.create({
   mainContainer: {
     height: "100%",
-    backgroundColor: "rgb(255, 162, 92)",
+    backgroundColor: COLORS.PRIMARY_COLOR,
     width: "100%",
     alignItems: "center"
   },
@@ -84,7 +117,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 20,
     textAlign: "center",
-    color: "rgb(255, 255, 255)"
+    color: COLORS.SECONDARY_COLOR
   },
   logoutImg: {
     width: 50,
@@ -94,7 +127,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 175,
     width: "80%",
-    backgroundColor: "rgb(255, 255, 255)",
+    backgroundColor: COLORS.SECONDARY_COLOR,
     paddingHorizontal: 20,
     height: 400,
     borderRadius: 10,
@@ -144,6 +177,6 @@ const styles = StyleSheet.create({
 
   },
   editBtnText: {
-    color: "rgb(255, 255, 255)"
+    color: COLORS.SECONDARY_COLOR
   }
 })

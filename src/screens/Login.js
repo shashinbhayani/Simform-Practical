@@ -13,7 +13,7 @@ export default class Login extends Component {
   
     this.state = {
        isPasswordVisible: false,
-       username: "admin@gmail.com",
+       email: "admin@gmail.com",
        password: "Simform.123"
     }
   }
@@ -25,12 +25,15 @@ export default class Login extends Component {
   }
 
   submitForm = () => {
-    if(this.state.username != "admin@gmail.com") {
-      alert('Username is incorrect')
+    if(this.state.email != "admin@gmail.com") {
+      alert('Email is incorrect')
     } else if(this.state.password != "Simform.123") {
       alert('Password is incorrect')
     } else {
-      Storage.setItem(STORAGE_CONST.USERNAME, this.state.username);
+      Storage.setItem(STORAGE_CONST.EMAIL, this.state.email);
+      Storage.setItem(STORAGE_CONST.USERNAME, 'johndoe');
+      Storage.setItem(STORAGE_CONST.MOBILE_NO, '9537646564');
+      Storage.setItem(STORAGE_CONST.MOBILE_CODE, '+91');
       this.props.navigation.navigate("Home")
     }
   }
@@ -54,10 +57,10 @@ export default class Login extends Component {
         <View style={styles.container}>
           <View style={styles.formContainer}>
             <TextField 
-              label='Username'
-              value={this.state.username}
-              tintColor="rgb(255, 162, 92)"
-              onChangeText={username => this.setState({ username })}
+              label='Email'
+              value={this.state.email}
+              tintColor={COLORS.PRIMARY_COLOR}
+              onChangeText={email => this.setState({ email })}
               onBlur={() => this.refs.password.focus()}
             />
             <TextField
@@ -65,7 +68,7 @@ export default class Login extends Component {
               label='Password'
               value={this.state.password}
               secureTextEntry={!this.state.isPasswordVisible}
-              tintColor="rgb(255, 162, 92)"
+              tintColor={COLORS.PRIMARY_COLOR}
               onChangeText={password => this.setState({ password })}
               renderAccessory={this._renderTogglePassword}
             />
@@ -93,7 +96,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: "rgb(255, 255, 255)",
+    backgroundColor: COLORS.SECONDARY_COLOR,
   },
   right: {
     width: "100%",
@@ -102,9 +105,9 @@ const styles = StyleSheet.create({
     borderBottomWidth: 200,
     borderBottomColor: 'transparent',
     borderLeftWidth: 0,
-    borderLeftColor: 'rgb(255, 255, 255)',
+    borderLeftColor: COLORS.SECONDARY_COLOR,
     borderRightWidth: 400,
-    borderRightColor: 'rgb(255, 255, 255)',
+    borderRightColor: COLORS.SECONDARY_COLOR,
     borderStyle: 'solid',
     transform: [
       {rotate: '2700deg'}
@@ -121,19 +124,19 @@ const styles = StyleSheet.create({
     marginLeft: 25
   },
   signupBtn: {
-    color: "rgb(255, 162, 92)",
-    borderBottomColor: "rgb(255, 162, 92)",
+    color: COLORS.PRIMARY_COLOR,
+    borderBottomColor: COLORS.PRIMARY_COLOR,
     borderBottomWidth: 1
   },
   loginBtn: {
-    backgroundColor: "rgb(255, 162, 92)",
+    backgroundColor: COLORS.PRIMARY_COLOR,
     paddingHorizontal: 25,
     paddingVertical: 10,
     borderTopLeftRadius: 20,
     borderBottomLeftRadius: 20
   },
   loginTxt: {
-    color: "rgb(255, 255, 255)"
+    color: COLORS.SECONDARY_COLOR
   },
   footerImage: {
     position: "absolute",
