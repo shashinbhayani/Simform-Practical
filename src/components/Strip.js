@@ -1,39 +1,46 @@
 import React, { Component } from 'react'
 import { Text, View, FlatList, TextInput, StyleSheet, TouchableOpacity } from 'react-native'
+import { connect } from 'react-redux'
+import { updateStripSeletedValueAction } from '../actions/StripsAction';
 
-export default class Strip extends Component {
+class Strip extends Component {
 
   constructor(props) {
     super(props);
 
     this.state = {
-      selectedValue: this.props.data.defaultValue,
-      tempValue: this.props.data.defaultValue.value
+      selectedValue: "",
+      tempValue: ""
     }
   }
 
-  selectColor = (value) => {
-    this.setState({
-      selectedValue: value,
-      tempValue: value.value.toString()
-    })
+  selectColor = selectedValue => {
+
+    const { id } = this.props.data
+
+    this.state.tempValue = selectedValue.value.toString()
+    this.props.updateStripSeletedValueAction(id, selectedValue)
   }
 
   changeSelectedValue = () => {
+    const { id } = this.props.data
     const selectedValue = this.props.data.values.filter(item => item.value == this.state.tempValue)
 
     if(selectedValue.length) {
-      this.setState({
-        selectedValue: selectedValue[0],
-      })
+      this.state.tempValue = selectedValue[0].value.toString()
+      this.props.updateStripSeletedValueAction(id, selectedValue[0])
     } else {
       this.setState({
-        tempValue: this.state.selectedValue.value.toString()
+        tempValue: Object.keys(this.props.selecetedValues[id]).length ? this.props.selecetedValues[id].value.toString() : ""
       })
     }
   }
 
-  _renderItem = ({item}) => (
+  _renderItem = ({item}) => {
+    const { id } = this.props.data
+    const selectedValue = this.props.selecetedValues[id];
+
+    return (
     <TouchableOpacity 
       style={styles.colorContainer}
       onPress={() => {
@@ -41,17 +48,18 @@ export default class Strip extends Component {
       }}
       activeOpacity={1}
     >
-      <View style={[styles.color, {backgroundColor: item.color}, item.value == this.state.selectedValue.value ? styles.selected : null]}></View>
+      <View style={[styles.color, {backgroundColor: item.color}, item.id == selectedValue.id ? styles.selected : null]}></View>
       <Text style={styles.value}>{item.value}</Text>
     </TouchableOpacity>
-  )
+  )}
 
   render() {
-    const { title, values } = this.props.data
+    const { title, values, id } = this.props.data
+    const selectedValue = this.props.selecetedValues[id];
     return (
       <View style={styles.mainContainer}>
         <View style={[styles.selectedColorContainer, {borderTopWidth: this.props.index == 0 ? 1 : 0, borderBottomWidth: this.props.index == 5 ? 1 : 0, }]}>
-          <View style={[styles.selectedColor, {backgroundColor: this.state.selectedValue.color}]}></View>
+          <View style={[styles.selectedColor, {backgroundColor: selectedValue.color}]}></View>
         </View>
         <View style={{flex: 1}}>
           <View style={styles.headerContainer}>
@@ -62,6 +70,7 @@ export default class Strip extends Component {
             <TextInput 
               value={this.state.tempValue.toString()}
               style={styles.input}
+              keyboardType="number-pad"
               onChangeText={value => {
                 this.setState({
                   tempValue: value
@@ -82,6 +91,18 @@ export default class Strip extends Component {
     )
   }
 }
+
+const mapStateToProps = ({StripsReducer}) => {
+  const { selecetedValues } = StripsReducer;
+  return {
+    selecetedValues
+  }
+}
+
+const mapDispatchToProps = {
+  updateStripSeletedValueAction
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Strip)
 
 const styles = StyleSheet.create({
   mainContainer: {flexDirection: "row"},

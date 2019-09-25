@@ -4,10 +4,10 @@ const INITIAL_STATE = {
   videos: []
 }
 
-export default (state = INITIAL_STATE, { type, data }) => {
+export default (state = INITIAL_STATE, { type, payload }) => {
   switch (type) {
     case GET_VIDEOS:
-      const videos = [...state.videos, ...data.videos]
+      const videos = [...state.videos, ...payload.videos]
       return {
         ...state,
         videos: videos

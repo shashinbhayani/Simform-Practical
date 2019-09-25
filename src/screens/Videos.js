@@ -20,7 +20,7 @@ class Videos extends Component {
 
   render() {
     const { videos } = this.props;
-    console.log(videos)
+    
     return (
       <View style={{ backgroundColor: "rgb(193,206,236)"}}>
         <Text style={{lineHeight: 45, fontSize: 20, fontWeight: "bold", textAlign: "center" }}>Videos</Text>

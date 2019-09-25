@@ -20,7 +20,6 @@ export default function* fetchVideosSaga() {
 
 async function getVideos() {
   try {
-    console.log("api called")
     const response = await fetch(GET_VIDEOS_URL);
     const data = await response.json();
     return data;
