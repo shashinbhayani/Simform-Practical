@@ -4,12 +4,12 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  ScrollView,
   StyleSheet
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { TextField } from 'react-native-material-textfield';
-import { COLORS } from '../utils/Constants';
+import { COLORS, STORAGE_CONST } from '../utils/Constants';
+import Storage from './../utils/Storage'
 
 export default class Signup extends Component {
   constructor(props) {
@@ -23,6 +23,23 @@ export default class Signup extends Component {
       address: "2134, Kembery Driveschamburg, IL, 60173",
       isPasswordVisible: false,
     };
+  }
+
+  submitForm = async () => {
+    const keyValues = [
+      [STORAGE_CONST.USERNAME, this.state.username.toString()],
+      [STORAGE_CONST.MOBILE_CODE, this.state.mobileCode.toString()],
+      [STORAGE_CONST.MOBILE_NO, this.state.mobileNo.toString()],
+      [STORAGE_CONST.EMAIL, this.state.email.toString()],
+    ]
+
+    try {
+      await Storage.multiSet(keyValues)  
+    } catch (error) {
+      alert("Error while submiting form")
+    }
+    
+    this.props.navigation.navigate("Home")
   }
 
   togglePasswordVisibility = () => {
@@ -111,9 +128,7 @@ export default class Signup extends Component {
           <TouchableOpacity
             style={styles.signupBtn}
             activeOpacity={1}
-            onPress={() => {
-              this.props.navigation.navigate("Home")
-            }}>
+            onPress={this.submitForm}>
             <Text style={styles.signupBtnText}>{'Signup  |  f'}</Text>
           </TouchableOpacity>
         </View>

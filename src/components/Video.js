@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { TouchableOpacity, View, Image, StyleSheet, StyleSheet } from 'react-native'
+import { TouchableOpacity, View, Image, StyleSheet } from 'react-native'
 import RNVideo from 'react-native-video'
 
 export default class Video extends Component {
